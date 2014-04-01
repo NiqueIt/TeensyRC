@@ -1,0 +1,49 @@
+#include <PulsePosition.h>
+
+// Simple loopback test: create 1 output to transmit
+// test pulses, and 1 input to receive the pulses
+PulsePositionOutput myOut;
+PulsePositionInput myIn;
+
+void setup() {
+  myOut.begin(5);  // connect pins 5 and 6 together...
+  myIn.begin(6);
+  myOut.write(1, 1500);
+  myOut.write(2, 1500);
+  myOut.write(3, 1500);
+  myOut.write(4, 1500);
+  myOut.write(5, 1500);
+  myOut.write(6, 1500);
+  myOut.write(7, 1500);
+  myOut.write(8, 1500);
+
+  // initialize serial communication:
+  Serial.begin(9600);  
+}
+
+int count=0;
+
+void loop() {
+  int i, num;
+
+// Read Analog0 and write it to Channel 1
+myOut.write(1,map(analogRead(0), 0, 1023, 1000, 2000));
+// Read Analog1 and write it to Channel 2
+myOut.write(2,map(analogRead(1), 0, 1023, 1000, 2000));
+
+
+  // Every time new data arrives, simply print it
+  // to the Arduino Serial Monitor.
+  num = myIn.available();
+  if (num > 0) {
+    count = count + 1;
+    Serial.print(count);
+    Serial.print(" :  ");
+    for (i=1; i <= num; i++) {
+      float val = myIn.read(i);
+      Serial.print(val);
+      Serial.print("  ");
+    }
+    Serial.println();
+  }
+}
