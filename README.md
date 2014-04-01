@@ -1,4 +1,4 @@
 TeensyRC
 ========
 
-Use Teensy to control an RC (plane, etc)
+An Open Source RC Transmitter implementation for Teensy 3.1
